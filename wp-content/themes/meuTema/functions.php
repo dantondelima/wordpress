@@ -41,7 +41,10 @@ function registrar_menu_navegacao() {
 
 add_action('init', 'registrar_menu_navegacao');
 
-function preenche_conteudo_informacoes_treinamento() { ?>
+function preenche_conteudo_informacoes_treinamento($post) { 
+	$curso_meta_data = get_post_meta($post->ID);
+	?>
+
 <script>
 		function Gratuito(){
 			if ($('#Gratuito-input').attr('Checked')) {
@@ -147,40 +150,32 @@ function registra_meta_boxes() {
 
 add_action('add_meta_boxes', 'registra_meta_boxes');
 
-/*<div class="metabox">
-		<div class="metabox-item">
-			<label for="Gratuito-input">Gratuito</label>
-				<input id="Gratuito-input" class="metabox-input" type="checkbox" name="gratuito_id" onclick="Gratuito()" <?php 
-					if ($curso_meta_data['gratuito_id'][0]) {
-							echo 'Checked';
-					} ?>
-				>
-			</div>
-		</div>
-		<div class="metabox-item">
-			<label for="Preco-input">Preço:</label>
-			<div class="input-addon-wrapper">
-				<span class="input-addon">R$</span>
-				<input id="Preco-input" class="metabox-input" type="text" name="preco_id"
-				value="<?= number_format($curso_meta_data['preco_id'][0], 2, ',', '.'); ?>">
-			</div>
-		</div>
-		<?php if ($curso_meta_data['gratuito_id'][0]) { ?>
-			<script>$("#Preco-input").attr("disabled", true);</script>
-			<?php
-		} ?>
-		<div class="metabox-item">
-			<label for="Chamada-input">Chamada:</label>
-			<input id="Chamada-input" class="metabox-input" type="date" name="chamada_id"
-			value="<?= $curso_meta_data['chamada_id'][0]; ?>">
-		</div>
+function salva_meta_info($post_id) {
+	update_post_meta($post_id, 'gratuito_id', $_POST['gratuito_id']);
 
-		<div class="metabox-item">
-			<label for="Vagas-input">Vagas:</label>
-			<input id="Vagas-input" class="metabox-input" type="number" name="vagas_id"
-			value="<?= $curso_meta_data['vagas_id'][0]; ?>">
-			<input type="hidden" id="Vagas_Restantes-input" name="vagasrestantes_id" value="">
-		</div>
-    </div>
-    
-    */
+	if(isset($_POST['preco_id']))
+		update_post_meta($post_id, 'preco_id', sanitize_text_field($_POST['preco_id']));
+
+	if(isset($_POST['chamada_id']))
+		update_post_meta($post_id, 'chamada_id', sanitize_text_field($_POST['chamada_id']));
+	
+	if(isset($_POST['vagas_id']))
+		update_post_meta($post_id, 'vagas_id', sanitize_text_field($_POST['vagas_id']));
+}
+
+add_action('save_post', 'salva_meta_info');
+
+add_action( 'admin_menu', 'remove_links_menu' );
+function remove_links_menu() {
+	// remove_menu_page('index.php'); // Painel
+	remove_menu_page('edit.php'); // Posts
+	remove_menu_page('upload.php'); // Media
+	//remove_menu_page('link-manager.php'); // Links
+	//remove_menu_page('edit.php?post_type=page'); // Paginas
+	remove_menu_page('edit-comments.php'); // Comentários
+	//remove_menu_page('themes.php'); // Aparência
+	remove_menu_page('plugins.php'); // Plugins
+	remove_menu_page('users.php'); // Usuários
+	// remove_menu_page('tools.php'); // Ferramentas
+	// remove_menu_page('options-general.php'); // Configurações
+}
