@@ -161,6 +161,8 @@ function salva_meta_info($post_id) {
 	
 	if(isset($_POST['vagas_id']))
 		update_post_meta($post_id, 'vagas_id', sanitize_text_field($_POST['vagas_id']));
+
+		update_post_meta($post_id, 'vagasrestantes_id', sanitize_text_field($_POST['vagasrestantes_id']));
 }
 
 add_action('save_post', 'salva_meta_info');

@@ -4,7 +4,7 @@
 Template Name: formulario
 */
 get_header(); 
-
+require_once('wp-load.php');
 ?>
     <script >
         $(document).ready(function(){
@@ -15,6 +15,7 @@ get_header();
             $cpf.mask('000.000.000-00', {reverse: true});
             $cel.mask('(00) 00000-0000');
             $tel.mask('(00) 0000-0000');
+
             $( "#datepicker" ).datepicker({
                 dateFormat: "dd/mm/yy",
                 changeMonth: true,
@@ -98,53 +99,106 @@ get_header();
     });
 
 </script>
-    <form class="form ">
-        <div class="form-group col-7">
+    <form class="form center-block" method="post" action="<?= (!empty($_POST['gratuito']) ) ? '/wordpress' : '' ?>" id="formInscricao">
+    <div>
+        <div class="form-group col-sm-8">
             <label for="nome">Nome:</label>
-            <input type="text" class="form-control" name="nome" id="nome" placeholder="Digite seu nome">
+            <input type="text" class="form-control" name="nome" id="nome" placeholder="Digite seu nome" required>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-5">
             <label for="data-nasc">Data de Nascimento:</label>
-            <input type="text" class="form-control" name="data-nasc" id="datepicker" placeholder="data de nascimento">
+            <input type="text" class="form-control" name="data_nasc" id="datepicker" placeholder="data de nascimento" required>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-3">
             <label for="cpf">CPF:</label>
-            <input type="text" class="form-control" name="cpf" id="cpf" placeholder="Digite seu cpf">
+            <input type="text" class="form-control" name="cpf" id="cpf" placeholder="Digite seu cpf" required>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-8">
             <label for="email">Email:</label>
-            <input type="text" class="form-control" name="email" id="email" placeholder="Digite seu email">
+            <input type="text" class="form-control" name="email" id="email" placeholder="Digite seu email" required>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-8">
             <label for="cep">CEP:</label>
-            <input type="text" class="form-control" name="cep" id="cep" placeholder="Digite seu cep">
+            <input type="text" class="form-control" name="cep" id="cep" placeholder="Digite seu cep" required>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-5">
             <label for="endereco">Endereço:</label>
             <input type="text" class="form-control" name="endereco" id="endereco" readonly>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-3">
             <label for="bairro">Bairro:</label>
             <input type="text" class="form-control" name="bairro" id="bairro" readonly>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-5">
             <label for="cidade">Cidade:</label>
             <input type="text" class="form-control" name="cidade" id="cidade" readonly>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-3">
             <label for="estado">Estado:</label>
             <input type="text" class="form-control" name="estado" id="estado" readonly>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-5">
             <label for="telefone">Telefone:</label>
-            <input type="text" class="form-control" name="telefone" id="telefone">
+            <input type="text" class="form-control" name="telefone" id="telefone" placeholder="Digite seu telefone" required>
         </div>
-        <div class="form-group col-7">
+        <div class="form-group col-sm-3">
             <label for="celular">Celular:</label>
-            <input type="text" class="form-control" name="celular" id="celular">
+            <input type="text" class="form-control" name="celular" id="celular" placeholder="Digite seu celular" required>
         </div>
         <input type="hidden" name="post_id" value="<?= $_POST['post_id']?>">
-        <button type="submit" style="margin-left:16px; margin-bottom: 30px; width: 895px" class="btn btn-primary btn-block">Inscrever-se</button>
+        <input type="hidden" name="gratuito" value="<?= $_POST['gratuito']?>">
+        <div class="form-group col-sm-8">
+            <input class="btn btn-primary" name="enviando" value="<?= ($_POST['gratuito']) ? 'Inscrever-se' : 'Inscrever-se'?>" type="submit"/>
+        </div>
+    </div>
 </form>
+<?php
+    if(isset($_POST['enviando'])):
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
+        $dataNasc = $_POST['data_nasc'];
+        $cpf = $_POST['cpf'];
+        $cep = $_POST['cep'];
+        $endereco = $_POST['endereco'];
+        $bairro = $_POST['bairro'];
+        $cidade = $_POST['cidade'];
+        $estado = $_POST['estado'];
+        $telefone = $_POST['telefone'];
+        $celular = $_POST['celular'];
+        $post = $_POST['post_id'];
 
+        if($_POST['gratuito'])
+        {
+            $status = 'Finalizado';
+        }
+        else
+        {
+            $status = 'pagamento';
+        }
+
+        global $wpdb;
+        $tabela = $wpdb->prefix . 'inscritos';
+            if(!$wpdb->insert($tabela, 
+            array(
+                'inscrito_nome' => $nome,
+                'inscrito_email' => $email,
+                'inscrito_data_nasc' => $dataNasc,
+                'inscrito_cpf' => $cpf, 
+                'inscrito_cep' => $cep,
+                'inscrito_endereco' => $endereco,
+                'inscrito_bairro' => $bairro,
+                'inscrito_cidade' => $cidade,
+                'inscrito_estado' => $estado,
+                'inscrito_telefone' => $telefone,
+                'inscrito_celular' => $celular,
+                'inscrito_status' => $status,
+                'post' => $post
+            )
+            )):
+
+            echo $wpdb->last_error;
+
+        endif;
+    endif;
+        ?>
 <?php get_footer(); ?>
