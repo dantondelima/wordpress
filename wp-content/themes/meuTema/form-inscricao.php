@@ -99,7 +99,7 @@ require_once('wp-load.php');
     });
 
 </script>
-    <form class="form center-block" method="post" action="<?= (!empty($_POST['gratuito']) ) ? '/wordpress' : '' ?>" id="formInscricao">
+    <form class="form center-block" method="post" action="<?= (!empty($_POST['gratuito']) ) ? '' : '' ?>" id="formInscricao">
     <div>
         <div class="form-group col-sm-8">
             <label for="nome">Nome:</label>

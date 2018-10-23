@@ -35,6 +35,8 @@ function cadastrando_post_type_treinamentos(){
 
 add_action('init', 'cadastrando_post_type_treinamentos');
 
+
+
 function registrar_menu_navegacao() {
     register_nav_menu('header-meun', 'main-menu');
 }
