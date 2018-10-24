@@ -99,7 +99,7 @@ require_once('wp-load.php');
     });
 
 </script>
-    <form class="form center-block" method="post" action="<?= (!empty($_POST['gratuito']) ) ? '' : '' ?>" id="formInscricao">
+    <form class="form center-block" method="POST" action="<?= (empty($_POST['gratuito']) || (intval($_POST['gratuito']) == 0) ) ? get_site_url().'/pagamento' : get_site_url().'/realizado' ?>" id="formInscricao">
     <div>
         <div class="form-group col-sm-8">
             <label for="nome">Nome:</label>
@@ -152,53 +152,5 @@ require_once('wp-load.php');
         </div>
     </div>
 </form>
-<?php
-    if(isset($_POST['enviando'])):
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $dataNasc = $_POST['data_nasc'];
-        $cpf = $_POST['cpf'];
-        $cep = $_POST['cep'];
-        $endereco = $_POST['endereco'];
-        $bairro = $_POST['bairro'];
-        $cidade = $_POST['cidade'];
-        $estado = $_POST['estado'];
-        $telefone = $_POST['telefone'];
-        $celular = $_POST['celular'];
-        $post = $_POST['post_id'];
 
-        if($_POST['gratuito'])
-        {
-            $status = 'Finalizado';
-        }
-        else
-        {
-            $status = 'pagamento';
-        }
-
-        global $wpdb;
-        $tabela = $wpdb->prefix . 'inscritos';
-            if(!$wpdb->insert($tabela, 
-            array(
-                'inscrito_nome' => $nome,
-                'inscrito_email' => $email,
-                'inscrito_data_nasc' => $dataNasc,
-                'inscrito_cpf' => $cpf, 
-                'inscrito_cep' => $cep,
-                'inscrito_endereco' => $endereco,
-                'inscrito_bairro' => $bairro,
-                'inscrito_cidade' => $cidade,
-                'inscrito_estado' => $estado,
-                'inscrito_telefone' => $telefone,
-                'inscrito_celular' => $celular,
-                'inscrito_status' => $status,
-                'post' => $post
-            )
-            )):
-
-            echo $wpdb->last_error;
-
-        endif;
-    endif;
-        ?>
 <?php get_footer(); ?>
