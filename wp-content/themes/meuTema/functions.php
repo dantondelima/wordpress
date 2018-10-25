@@ -2,6 +2,24 @@
 
 add_theme_support('post-thumbnails');
 
+add_action('admin_menu', 'inscricoes_menu');
+
+function inscricoes_callback(){
+	include("listagem.php");
+}
+
+function inscricoes_menu() {
+	add_menu_page(
+		'Incrições',
+		'Inscrições',
+		'administrator',
+		'slug',
+		'inscricoes_callback',
+		'dashicons-heart',
+		26
+	);
+}
+
 function cadastrando_post_type_treinamentos(){
 
     $nomeSingular = 'Treinamento';
@@ -12,7 +30,7 @@ function cadastrando_post_type_treinamentos(){
         'name' => $nomePlural,
         'name_singular' => $nomeSingular,
         'add_new_item' => 'Adicionar novo '.$nomeSingular,
-        'edit_item' => 'Editar'.$nomeSingular
+        'edit_item' => 'Editar '.$nomeSingular
     );
 
     $supports = array(
@@ -35,10 +53,8 @@ function cadastrando_post_type_treinamentos(){
 
 add_action('init', 'cadastrando_post_type_treinamentos');
 
-
-
 function registrar_menu_navegacao() {
-    register_nav_menu('header-meun', 'main-menu');
+    register_nav_menu('header-menu', 'main-menu');
 }
 
 add_action('init', 'registrar_menu_navegacao');
@@ -153,20 +169,30 @@ function registra_meta_boxes() {
 add_action('add_meta_boxes', 'registra_meta_boxes');
 
 function salva_meta_info($post_id) {
-	update_post_meta($post_id, 'gratuito_id', $_POST['gratuito_id']);
-
+	
+	$checked = $_POST['gratuito_id'];
+	update_post_meta( $post_id, 'gratuito_id', $checked );
+	if ($checked == 1) {
+		?>
+			<script>$('#Preco-input').attr('disabled',true);</script>
+		<?php
+	}
 	if(isset($_POST['preco_id']))
 		update_post_meta($post_id, 'preco_id', sanitize_text_field($_POST['preco_id']));
 
 	if(isset($_POST['chamada_id']))
 		update_post_meta($post_id, 'chamada_id', sanitize_text_field($_POST['chamada_id']));
 	
-	if(isset($_POST['vagas_id']))
+	if(isset($_POST['vagas_id'])){
 		update_post_meta($post_id, 'vagas_id', sanitize_text_field($_POST['vagas_id']));
-
-		update_post_meta($post_id, 'vagasrestantes_id', sanitize_text_field($_POST['vagasrestantes_id']));
+		if ($_POST['vagasrestantes_id'] != "") {
+			update_post_meta($post_id, 'vagasrestantes_id', sanitize_text_field($_POST['vagasrestantes_id']));
+		}
+		else{
+			update_post_meta($post_id, 'vagasrestantes_id', sanitize_text_field($_POST['vagas_id']));
+		}
+	}
 }
-
 add_action('save_post', 'salva_meta_info');
 
 add_action( 'admin_menu', 'remove_links_menu' );
