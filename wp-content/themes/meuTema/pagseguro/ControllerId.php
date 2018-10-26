@@ -1,4 +1,7 @@
 <?php
+/*
+    Template Name: controller
+*/
 include("config.php");
 
 $Url="https://ws.sandbox.pagseguro.uol.com.br/v2/sessions?email=".EMAIL_PAGSEGURO."&token=".TOKEN_SANDBOX."";
