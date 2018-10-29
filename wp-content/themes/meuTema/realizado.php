@@ -37,7 +37,7 @@ Template Name: realizado
                 'inscrito_telefone' => $telefone,
                 'inscrito_celular' => $celular,
                 'inscrito_status' => $status,
-                'post' => $post
+                'pk_post' => $post
             )
             )){
                 echo $wpdb->last_error;

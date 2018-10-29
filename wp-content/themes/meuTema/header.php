@@ -17,7 +17,16 @@
     </head>
     <body>
         
-    <header>
-        <a href="<?= get_site_url()?>">Início</a>
-    </header>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Crud Wordpress</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="<?= get_site_url()?>">Início</a></li>
+                <li><a href="<?= get_site_url().'/cursos/'?>">Cursos</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
 

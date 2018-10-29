@@ -43,6 +43,7 @@ Template Name: listagem
         {
             $query = $query." order by inscrito_id desc";
         }
+        
         return $query;
     }
     
@@ -71,7 +72,7 @@ Template Name: listagem
     function TodosRegistros()
     {   
         global $wpdb;
-        $query = "select * from wp_inscritos inner join wp_posts on id = pk_post";
+        $query = "select * from wp_inscritos inner join wp_posts on ID = pk_post";
         $formato = "ARRAY_A";
         $wpdb->get_results($query, $formato);
         return $wpdb->num_rows;
