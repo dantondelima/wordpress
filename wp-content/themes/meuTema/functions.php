@@ -4,9 +4,7 @@ add_theme_support('post-thumbnails');
 
 add_action('admin_menu', 'inscricoes_menu');
 
-function inscricoes_callback(){
-	include("listagem.php");
-}
+include("listagem.php");
 
 function inscricoes_menu() {
 	add_menu_page(
@@ -53,11 +51,6 @@ function cadastrando_post_type_treinamentos(){
 
 add_action('init', 'cadastrando_post_type_treinamentos');
 
-function registrar_menu_navegacao() {
-    register_nav_menu('header-menu', 'main-menu');
-}
-
-add_action('init', 'registrar_menu_navegacao');
 
 function preenche_conteudo_informacoes_treinamento($post) { 
 	$curso_meta_data = get_post_meta($post->ID);
