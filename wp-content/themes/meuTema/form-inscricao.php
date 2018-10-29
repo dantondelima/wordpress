@@ -99,7 +99,7 @@ require_once('wp-load.php');
     });
 
 </script>
-    <form class="form center-block" method="POST" action="<?= (empty($_POST['gratuito']) || (intval($_POST['gratuito']) == 0) ) ? get_site_url().'/realizado/' : get_site_url().'/pagamento/'?>" id="formInscricao">
+    <form class="form center-block" method="POST" action="<?= ((!empty($_POST['gratuito']) || (intval($_POST['gratuito']) == 1) ) ? get_site_url().'/realizado/' : get_site_url().'/pagamento/')?>" id="formInscricao">
     <div>
         <div class="form-group col-sm-8">
             <label for="nome">Nome:</label>
