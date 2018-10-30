@@ -8,13 +8,6 @@ require_once('wp-load.php');
 ?>
     <script >
         $(document).ready(function(){
-            // var $cpf = $("#cpf");
-            // var $cel = $("#celular");
-            // var $tel = $("#telefone");
-
-            // $cpf.mask('000.000.000-00', {reverse: true});
-            // $cel.mask('(00) 00000-0000');
-            // $tel.mask('(00) 0000-0000');
 
             $( "#datepicker" ).datepicker({
                 dateFormat: "dd/mm/yy",

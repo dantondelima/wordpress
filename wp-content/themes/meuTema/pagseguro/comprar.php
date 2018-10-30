@@ -112,7 +112,7 @@ if(isset($_POST['comprando'])){
             'inscrito_telefone' => $telefone,
             'inscrito_celular' => $celular,
             'inscrito_status' => $status,
-            'pk_post' => $post))) 
+            'post_id' => $post))) 
     {
         ?>
         <div class="alert alert-success alert-dismissible show">

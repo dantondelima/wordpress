@@ -11,12 +11,14 @@ function inscricoes_menu() {
 		'Incrições',
 		'Inscrições',
 		'administrator',
-		'slug',
+		'listagem_menu',
 		'inscricoes_callback',
 		'dashicons-heart',
 		26
 	);
 }
+
+
 
 function cadastrando_post_type_treinamentos(){
 
@@ -60,7 +62,7 @@ function preenche_conteudo_informacoes_treinamento($post) {
 		function Gratuito(){
 			if ($('#Gratuito-input').attr('Checked')) {
 				$('#Preco-input').attr('disabled',true);
-				$('#Preco-input').attr('value','0,00');
+				$('#Preco-input').attr('value','0.0');
 			}
 			else{
 				$('#Preco-input').attr('disabled',false);	
@@ -162,17 +164,18 @@ function registra_meta_boxes() {
 add_action('add_meta_boxes', 'registra_meta_boxes');
 
 function salva_meta_info($post_id) {
-	
 	$checked = $_POST['gratuito_id'];
-	update_post_meta( $post_id, 'gratuito_id', $checked );
+
+	update_post_meta($post_id, 'gratuito_id', $checked );
 	if ($checked == 1) {
 		?>
 			<script>$('#Preco-input').attr('disabled',true);</script>
 		<?php
 	}
-	if(isset($_POST['preco_id']))
+	if(isset($_POST['preco_id'])) {
 		update_post_meta($post_id, 'preco_id', sanitize_text_field($_POST['preco_id']));
-
+	}
+		
 	if(isset($_POST['chamada_id']))
 		update_post_meta($post_id, 'chamada_id', sanitize_text_field($_POST['chamada_id']));
 	
@@ -202,3 +205,17 @@ function remove_links_menu() {
 	// remove_menu_page('tools.php'); // Ferramentas
 	// remove_menu_page('options-general.php'); // Configurações
 }
+
+function add_inscrito_columns($columns) {
+    return array_merge($columns, 
+              array('inscritos' => __('Inscritos')));
+}
+add_filter('manage_posts_columns' , 'add_inscrito_columns');
+
+function add_inscrito_custom_columns($column, $post_id) { 
+	if ('inscritos' == $column) { 
+		echo "<a href='".get_site_url()."/wp-admin/admin.php?page=listagem_menu&post_id=".$post_id."'>Ver inscritos do curso</a>"; 
+	}
+} 
+
+add_action('manage_posts_custom_column', 'add_inscrito_custom_columns', 10, 2);
