@@ -21,6 +21,7 @@ Template Name: realizado
         $post = $_POST['post_id'];
         $status = "Finalizada";
         $data = date('Y-m-d');
+        $metaValue = $wpdb->get_var("select meta_value from wp_postmeta where meta_key = 'vagasrestantes_id' and post_id = ".$post.";");
         global $wpdb;
         $tabela = $wpdb->prefix . 'inscritos';
             if(!$wpdb->insert($tabela, 
@@ -37,14 +38,15 @@ Template Name: realizado
                 'inscrito_telefone' => $telefone,
                 'inscrito_celular' => $celular,
                 'inscrito_status' => $status,
-                'post_id' => $post,
+                'id_post' => $post,
                 'data' => $data
             )
             )){
                 echo $wpdb->last_error;
             }
             else{
-                $wpdb->update('wp_postmeta', array('meta_value' => (intval($meta_value)-1) ), array('post_id' => $post , 'meta_key' => 'vagasrestantes_id'));
+                $metaValue--;
+      	        $wpdb->update('wp_postmeta', array('meta_value' => $metaValue ), array('post_id' => $post , 'meta_key' => 'vagasrestantes_id'));
                 $to = $email;
                 $subject = 'Cadastro realizado';
                 $body = 'Inscrição efetuada com sucesso';
@@ -52,12 +54,10 @@ Template Name: realizado
                  
                 wp_mail( $to, $subject, $body, $headers);
           ?>
-                 <h1>Inscrição realizada com sucesso</h1>
-        <?php    }
+                    <h1>Inscrição realizada com sucesso</h1>
+        <?php   }
         }
 
 
 get_footer(); ?>
 
-
-<!-- $wpdb->update('wp_postmeta', array('meta_value' => (intval($meta_value)-1) ), array('post_id' => $post , 'meta_key' => 'vagasrestantes_id')); -->

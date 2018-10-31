@@ -232,3 +232,4 @@ function mailer_config( $mailer){
   $mailer->From = "smtp@kbrtec.com.br";
   $mailer->FromName = "Wordpress - teste";
 }
+

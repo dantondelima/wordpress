@@ -111,7 +111,7 @@ if(isset($_POST['comprando'])){
             'inscrito_telefone' => $telefone,
             'inscrito_celular' => $celular,
             'inscrito_status' => $status,
-            'post_id' => $post,
+            'id_post' => $post,
             'data' => $data))) 
     {
         ?>
