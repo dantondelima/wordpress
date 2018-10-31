@@ -219,3 +219,16 @@ function add_inscrito_custom_columns($column, $post_id) {
 } 
 
 add_action('manage_posts_custom_column', 'add_inscrito_custom_columns', 10, 2);
+
+add_action( 'phpmailer_init', 'mailer_config');
+function mailer_config( $mailer){
+  $mailer->IsSMTP();
+  $mailer->Host = "smtplw.com.br";
+  $mailer->SMTPAuth = true;
+  $mailer->Port = 587;
+  $mailer->Username = "kbrtec12";
+  $mailer->Password = "E4HsryASrHtW5M";
+  $mailer->SMTPSecure = 'tls';
+  $mailer->From = "smtp@kbrtec.com.br";
+  $mailer->FromName = "Wordpress - teste";
+}

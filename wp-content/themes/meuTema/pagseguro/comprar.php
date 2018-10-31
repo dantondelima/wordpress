@@ -30,9 +30,7 @@ $celular = $_POST['celular'];
 $post = $_POST['post_id'];
 $titulo = $_POST['titulo'];
 
-
 $preco= number_format($_POST['preco'], 2, '.', '');
-//$data = substr($data, 8, 2)."/".substr($data, 5, 2)."/".substr($data, 0, 4);
 
 $Data["email"]=EMAIL_PAGSEGURO;
 $Data["token"]=TOKEN_SANDBOX;
@@ -94,6 +92,7 @@ if(isset($_POST['comprando'])){
     $nome = $_POST['nome'];
     $endereco = $_POST['endereco'];
     $dataNasc = $_POST['data_nasc'];
+    $data = date('Y-m-d');
     $status = 'Aguardando confirmação de pagamento';
     global $wpdb;
     $inscrito_table = $wpdb->prefix.'inscritos';
@@ -112,12 +111,22 @@ if(isset($_POST['comprando'])){
             'inscrito_telefone' => $telefone,
             'inscrito_celular' => $celular,
             'inscrito_status' => $status,
-            'post_id' => $post))) 
+            'post_id' => $post,
+            'data' => $data))) 
     {
         ?>
         <div class="alert alert-success alert-dismissible show">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Inscrição efetuada com sucesso</strong>
+            <?php
+                $wpdb->update('wp_postmeta', array('meta_value' => (intval($meta_value)-1) ), array('post_id' => $post , 'meta_key' => 'vagasrestantes_id'));
+                $to = $email;
+                $subject = 'Cadastro realizado';
+                $body = 'Esperando a confirmação do pagamento';
+                $headers = array('Content-Type: text/html; charset=UTF-8');
+                 
+                wp_mail( $to, $subject, $body, $headers);
+            ?>
         </div>
         <?php
         $BuildQuery=http_build_query($Data);
@@ -130,6 +139,7 @@ if(isset($_POST['comprando'])){
         curl_setopt($Curl,CURLOPT_POSTFIELDS,$BuildQuery);
         $Retorno=curl_exec($Curl);
         curl_close($Curl);
+        
         $Xml=simplexml_load_string($Retorno);
         if(!(substr($Xml, 1, 6) == "errors")) {?>
             <div class="alert alert-success alert-dismissible show">

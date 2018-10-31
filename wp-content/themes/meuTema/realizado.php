@@ -20,7 +20,7 @@ Template Name: realizado
         $celular = $_POST['celular'];
         $post = $_POST['post_id'];
         $status = "Finalizada";
-
+        $data = date('Y-m-d');
         global $wpdb;
         $tabela = $wpdb->prefix . 'inscritos';
             if(!$wpdb->insert($tabela, 
@@ -37,15 +37,27 @@ Template Name: realizado
                 'inscrito_telefone' => $telefone,
                 'inscrito_celular' => $celular,
                 'inscrito_status' => $status,
-                'post_id' => $post
+                'post_id' => $post,
+                'data' => $data
             )
             )){
                 echo $wpdb->last_error;
             }
             else{
-                ?> <h1>Inscrição realizada com sucesso</h1>
+                $wpdb->update('wp_postmeta', array('meta_value' => (intval($meta_value)-1) ), array('post_id' => $post , 'meta_key' => 'vagasrestantes_id'));
+                $to = $email;
+                $subject = 'Cadastro realizado';
+                $body = 'Inscrição efetuada com sucesso';
+                $headers = array('Content-Type: text/html; charset=UTF-8');
+                 
+                wp_mail( $to, $subject, $body, $headers);
+          ?>
+                 <h1>Inscrição realizada com sucesso</h1>
         <?php    }
         }
 
 
 get_footer(); ?>
+
+
+<!-- $wpdb->update('wp_postmeta', array('meta_value' => (intval($meta_value)-1) ), array('post_id' => $post , 'meta_key' => 'vagasrestantes_id')); -->

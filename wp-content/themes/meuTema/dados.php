@@ -13,8 +13,8 @@ Template Name: listagem
             $sub_dados[] = $row['inscrito_nome'];
             $sub_dados[] = $row['inscrito_email'];
             $sub_dados[] = $row['inscrito_status'];
-            $sub_dados[] = "<a href='' role='button' class='btn btn-primary' data-toggle='tooltip' title='Alterar'><span class='glyphicon glyphicon-eye-open'></span></a>";
-            $sub_dados[] = "<form method='POST' action=''>".""."<button type='submit' role='button' class='btn btn-danger' data-toggle='tooltip' title='Deletar Item'><span class='glyphicon glyphicon-trash'></span></button></form>";
+            $sub_dados[] = "<form method='POST' action=''><input type='hidden' name='inscrito_id' value='".$row['inscrito_id']."'/><button type='submit' role='button' class='btn btn-primary' name='visualizar' data-toggle='tooltip' value='visualizando' title='Visualizar'><span class='glyphicon glyphicon-eye-open'></span></button></form>";
+            $sub_dados[] = "<form method='POST' action=''><input type='hidden' name='inscrito_id' value='".$row['inscrito_id']."'/><button type='submit' role='button' class='btn btn-danger' data-toggle='tooltip' title='Deletar Item' value='deletando' name='deletar'><span class='glyphicon glyphicon-trash'></span></button></form>";
             $dados[] = $sub_dados;
         }
         

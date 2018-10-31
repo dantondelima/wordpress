@@ -196,6 +196,7 @@ get_header();
         <input type="hidden" name="preco" id="preco" value="<?= $_POST['preco'] ?>"/>
         <input type="hidden" name="post_id" id="post_id" value="<?= $_POST['post_id'] ?>"/>
         <input type="hidden" name="titulo" value="<?=$_POST['titulo']?>"/>
+        <input type="hidden" name="data" value="<?=$_POST['data']?>"/>
         <input id="comprar" name="comprando" class="btn btn-primary" role="button" value="Comprar"/>    </div>
     </form>
     <br>
